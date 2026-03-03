@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Nosiba ✨</title>
+    <style>
+        :root { --primary-blue: #38bdf8; --dark-bg: #020617; --gold: #ffd700; --pink: #f472b6; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; width: 100%; background: var(--dark-bg); overflow: hidden; font-family: 'Cairo', sans-serif; color: white; }
+
+        /* Stars Background */
+        #stars-container { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0.6; animation: fall linear infinite; }
+        @keyframes fall { from { transform: translateY(-10vh); } to { transform: translateY(110vh); } }
+
+        /* Screens Layout */
+        .screen { position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 20px; transition: opacity 0.8s ease; }
+        .card { background: rgba(255,255,255,0.07); backdrop-filter: blur(15px); border: 1px solid var(--primary-blue); border-radius: 20px; padding: 35px 25px; width: 95%; max-width: 400px; text-align: center; box-shadow: 0 0 30px rgba(56,189,248,0.2); }
+        
+        input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 1px solid var(--primary-blue); background: rgba(255,255,255,0.1); color: white; text-align: center; font-size: 1.2rem; outline: none; }
+        button { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary-blue); color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+
+        /* Pink Header Message */
+        .pink-header { color: var(--pink); font-family: 'Arial', sans-serif; font-weight: 900; font-size: 1rem; letter-spacing: 1px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(244, 114, 182, 0.4); text-align: center; }
+
+        /* Lyrics Styling */
+        .lyrics-container { margin: 10px 0; display: flex; flex-direction: column; gap: 12px; }
+        .lyric-line { font-size: 1.25rem; font-weight: bold; color: #4b5563; transition: 0.4s; text-align: center; }
+        .lyric-line.active { color: var(--primary-blue); text-shadow: 0 0 15px var(--primary-blue); transform: scale(1.1); }
+
+        /* Lamp Style */
+        .lamp-box { width: 170px; cursor: pointer; transition: 0.8s; margin-top: 15px; }
+        .lamp-img { width: 100%; filter: drop-shadow(0 0 15px var(--gold)); }
+
+        /* Final Message Box */
+        #final-wrap { display: none; flex-direction: column; align-items: center; gap: 20px; animation: fadeIn 1.5s forwards; width: 90%; }
+        #final-msg { font-size: 1.15rem; line-height: 1.8; border-right: 5px solid var(--gold); padding: 25px; background: rgba(255,255,255,0.08); border-radius: 15px; text-align: center; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="stars-container"></div>
+    <audio id="audio" loop><source src="https://files.catbox.moe/3x0al8.mp3"></audio>
+
+    <div id="pass-screen" class="screen">
+        <div class="card">
+            <h2 style="color:var(--gold); font-size: 1.4rem;">ان شاء الله هتغيري رائك</h2>
+            <input type="text" id="pass-input" placeholder="B7BK">
+            <button onclick="checkPass()">دخول 🔓</button>
+        </div>
+    </div>
+
+    <div id="ready-screen" class="screen" style="display:none; opacity:0;">
+        <div class="card">
+            <h1 style="color:var(--primary-blue); margin-bottom:25px;">مستعده يروحي😂💕</h1>
+            <button onclick="startMagic()">الدخول للمفاجأه 🚀</button>
+        </div>
+    </div>
+
+    <div id="main-content" class="screen" style="display:none; opacity:0; justify-content: flex-start; padding-top: 40px;">
+        
+        <div class="pink-header" id="pink-msg">TO MOST BEAUTIFUL GIRL IN THE WORLD</div>
+
+        <div class="lyrics-container" id="lyrics-box">
+            <span id="l1" class="lyric-line">ورجعيني لحلاوه البدايات</span>
+            <span id="l2" class="lyric-line">نعيد ونزود الحكايات</span>
+            <span id="l3" class="lyric-line">واشوفها واقفه قدامي</span>
+            <span id="l4" class="lyric-line">وسمعيني صوتها مره كمان</span>
+            <span id="l5" class="lyric-line">جيبيها صدفه في الاحلام</span>
+            <span id="l6" class="lyric-line">واخدها في حضني من تاني</span>
+        </div>
+
+        <div class="lamp-box" id="lamp-container" ontouchmove="handleRub()" onmousedown="handleRub()">
+            <img src="https://files.catbox.moe/898v62.png" class="lamp-img" id="lamp-img">
+            <p style="color:var(--gold); font-size:0.9rem; margin-top:10px;">ادعكي المصباح ✨</p>
+        </div>
+
+        <div id="final-wrap">
+            <div id="final-msg">انا عارف اني قرفتك كتير وزهقتك مني بس وعهد الله بحبك يا نسيبه وبموت فيكي اديني اخر فرصه ينور عيني عشان والله بحبك وهثبتلك المره دي انها غير اي مره فاتت عشان خاطري يا حبيبتي انتي وحشتيني اوي ومصحف ربنا😔❤️</div>
+            <button style="background:transparent; border:1px solid var(--gold); color:var(--gold); width:auto; padding:10px 20px;" onclick="location.reload()">رجوع ↩️</button>
+        </div>
+    </div>
+
+    <script>
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 60; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * -100 + 'vh';
+                let size = Math.random() * 2 + 1 + 'px';
+                star.style.width = size; star.style.height = size;
+                star.style.animationDuration = Math.random() * 3 + 4 + 's';
+                container.appendChild(star);
+            }
+        }
+        createStars();
+
+        function checkPass() {
+            if(document.getElementById('pass-input').value.toUpperCase() === "B7BK") {
+                fadeOut('pass-screen', () => showScreen('ready-screen'));
+            } else { alert("الباسورد غلط.. حاولي تاني 😔"); }
+        }
+
+        function startMagic() {
+            fadeOut('ready-screen', () => {
+                showScreen('main-content');
+                document.getElementById('audio').play();
+                startLyrics();
+            });
+        }
+
+        function startLyrics() {
+            const timings = [500, 4800, 9200, 13500, 17800, 22000];
+            const lines = document.querySelectorAll('.lyric-line');
+            const run = () => {
+                timings.forEach((ms, i) => {
+                    setTimeout(() => {
+                        lines.forEach(l => l.classList.remove('active'));
+                        if(lines[i]) lines[i].classList.add('active');
+                    }, ms);
+                });
+            };
+            run();
+            setInterval(run, 26000);
+        }
+
+        let rubs = 0;
+        function handleRub() {
+            rubs++;
+            document.getElementById('lamp-img').style.transform = `rotate(${rubs % 2 === 0 ? 5 : -5}deg) scale(1.05)`;
+            if(rubs > 25) {
+                document.getElementById('lamp-container').style.opacity = '0';
+                document.getElementById('lyrics-box').style.opacity = '0';
+                document.getElementById('pink-msg').style.opacity = '0'; // إخفاء الجملة البينك مع المصباح
+                setTimeout(() => {
+                    document.getElementById('lamp-container').style.display = 'none';
+                    document.getElementById('lyrics-box').style.display = 'none';
+                    document.getElementById('pink-msg').style.display = 'none';
+                    document.getElementById('final-wrap').style.display = 'flex';
+                }, 800);
+            }
+        }
+
+        function fadeOut(id, cb) {
+            const el = document.getElementById(id);
+            el.style.opacity = '0';
+            setTimeout(() => { el.style.display = 'none'; cb(); }, 800);
+        }
+        function showScreen(id) {
+            const el = document.getElementById(id);
+            el.style.display = 'flex';
+            setTimeout(() => el.style.opacity = '1', 50);
+        }
+    </script>
+</body>
+</html>
